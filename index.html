@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>四季星空认星座 · 课堂教学（增强版）</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>✦</text></svg>">
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+<header class="site-header">
+  <div class="header-inner">
+    <a class="brand" id="brandHome" href="#">
+      <span class="logo">✦</span>
+      <span>四季星空认星座<small>课堂教学用具 · 增强版</small></span>
+    </a>
+    <nav class="topnav">
+      <span id="crumb" class="crumb"></span>
+      <a href="#" id="homeBtn" class="navlink">首页</a>
+    </nav>
+  </div>
+</header>
+
+<main class="container">
+
+  <!-- ============ 首页：六个模块 ============ -->
+  <section id="view-home" class="view">
+    <div class="hero">
+      <h1>先学后测 · 认识四季与南天星座</h1>
+      <p>共学习 76 个星座：春、夏、秋、冬与拱极模块收录北半球中纬度（北京约 40°N）可见的星座；北京看不到的典型南天星座单独归入“南天星座”模块。先看带标注的星图与<b>记忆口诀</b>，再通过“判断星座”和“在图上点亮重要亮星”两关检测，错题可反复重练。</p>
+    </div>
+
+    <!-- 学习进度总览 -->
+    <div class="progress-overview" id="progressOverview"></div>
+
+    <div class="season-grid" id="seasonGrid"></div>
+
+    <!-- 学习工具：闪卡 / 小课堂 -->
+    <div class="tool-grid">
+      <button class="tool-card tool-card-flash" id="flashEntry" type="button">
+        <span class="tool-card-icon">🃏</span>
+        <span class="tool-card-body">
+          <strong>闪卡速记</strong>
+          <span>课前 5 分钟快速过：正面看星图，翻面看名字、口诀与最亮星，可按季节、随机顺序。</span>
+        </span>
+        <span class="tool-card-go">开始 →</span>
+      </button>
+      <button class="tool-card tool-card-basics" id="basicsEntry" type="button">
+        <span class="tool-card-icon">🎓</span>
+        <span class="tool-card-body">
+          <strong>观星小课堂</strong>
+          <span>认星前先懂：星等、恒星颜色与温度、星座连线、天球旋转、中西星官、观星准备。</span>
+        </span>
+        <span class="tool-card-go">开始 →</span>
+      </button>
+    </div>
+
+    <!-- 混合随机抽查入口 -->
+    <button class="mix-entry" id="mixEntry" type="button">
+      <span class="mix-entry-icon">🎲</span>
+      <span class="mix-entry-body">
+        <strong>混合随机抽查 · 10 题</strong>
+        <span>跨春、夏、秋、冬与拱极（共 53 个、不含南天星座）随机出题，可按季节或“21 颗一等亮星”侧重，混合考查“认星座”与“点亮亮星”。</span>
+      </span>
+      <span class="mix-entry-go">开始 →</span>
+    </button>
+
+    <p class="hint-text">建议流程：先上「观星小课堂」懂概念 → 看「闪卡」或进模块学口诀 → 模块测验 → 错题重练 → 混合抽查。</p>
+  </section>
+
+  <!-- ============ 季节模块页 ============ -->
+  <section id="view-season" class="view hidden">
+    <div class="season-head">
+      <div>
+        <h2 id="seasonTitle"></h2>
+        <p class="season-months" id="seasonMonths"></p>
+      </div>
+      <button class="btn btn-primary" id="startQuizBtn">开始本季测验 →</button>
+    </div>
+    <p class="season-intro" id="seasonIntro"></p>
+    <div class="landmarks" id="seasonLandmarks"></div>
+    <div class="learn-toolbar">
+      <span class="muted" id="seasonCount"></span>
+      <button class="btn btn-ghost" id="startLearnBtn">逐个学习 →</button>
+    </div>
+    <div class="constellation-grid" id="constellationGrid"></div>
+  </section>
+
+  <!-- ============ 学习页 ============ -->
+  <section id="view-learn" class="view hidden">
+    <!-- 记忆口诀横幅 -->
+    <div class="mnemonic-banner" id="mnemonicBanner">
+      <span class="mnemonic-tag">记忆口诀</span>
+      <span class="mnemonic-text" id="learnMnemonic"></span>
+    </div>
+
+    <div class="learn-layout">
+      <div class="learn-chart-wrap">
+        <canvas id="learnChart"></canvas>
+        <p class="chart-cap">图中金圈为“必认亮星”，点击下方亮星卡片可在图上定位。</p>
+      </div>
+      <div class="learn-info">
+        <div class="learn-title-row">
+          <span class="badge" id="learnSeasonBadge"></span>
+          <h2 id="learnName"></h2>
+          <span class="mastery-pill" id="learnMastery"></span>
+        </div>
+        <p class="learn-en" id="learnEn"></p>
+        <ul class="info-list">
+          <li><b>形状</b><span id="learnShape"></span></li>
+          <li><b>辨识要点</b><span id="learnTip"></span></li>
+          <li class="find-li"><b>怎么找</b><span id="learnFind"></span></li>
+          <li class="note-li" id="learnNoteLi"><b>拓展</b><span id="learnNote"></span></li>
+          <li><b>最佳观测</b><span id="learnBest"></span></li>
+        </ul>
+        <div class="key-stars">
+          <h4>必认亮星</h4>
+          <div id="keyStarCards" class="key-star-cards"></div>
+          <div class="star-knowledge" id="starKnowledge">
+            <p class="muted small">点击上方亮星卡片，查看该星介绍与颜色。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="learn-nav">
+      <button class="btn btn-ghost" id="learnPrev">← 上一个星座</button>
+      <span class="learn-progress" id="learnProgress"></span>
+      <button class="btn btn-ghost" id="learnNext">下一个星座 →</button>
+      <button class="btn btn-primary" id="learnToQuiz">学完，去测验本季 →</button>
+    </div>
+  </section>
+
+  <!-- ============ 测验页 ============ -->
+  <section id="view-quiz" class="view hidden">
+    <div class="quiz-topbar">
+      <div class="quiz-progress-wrap">
+        <div class="quiz-progress"><span id="quizProgressFill"></span></div>
+        <span class="quiz-progress-text" id="quizProgressText"></span>
+      </div>
+      <div class="quiz-score">得分：<b id="quizScore">0</b></div>
+      <button class="btn btn-toggle" id="quizLinesBtn">隐藏星座连线</button>
+      <button class="btn btn-quit" id="quizQuit">退出</button>
+    </div>
+
+    <!-- 阶段A：判断星座 -->
+    <div id="stageName" class="quiz-stage">
+      <h3 class="quiz-question">这是哪一个星座？（看星点与连线，选出它的名字）</h3>
+      <div class="quiz-chart-wrap"><canvas id="nameChart"></canvas></div>
+      <div class="options" id="nameOptions"></div>
+    </div>
+
+    <!-- 阶段B：点亮亮星 -->
+    <div id="stageStar" class="quiz-stage hidden">
+      <h3 class="quiz-question">在星图上点亮这颗亮星：<span class="target-star" id="targetStarName"></span></h3>
+      <div class="quiz-chart-wrap clickable">
+        <canvas id="starChart"></canvas>
+        <div class="crosshair" id="crosshair"></div>
+      </div>
+      <p class="muted small center">请用鼠标（或手指）点击该亮星所在的星点</p>
+    </div>
+
+    <!-- 反馈条 -->
+    <div id="quizFeedback" class="quiz-feedback hidden"></div>
+    <div class="quiz-next-wrap hidden" id="quizNextWrap">
+      <button class="btn btn-primary" id="quizNextBtn">继续 →</button>
+    </div>
+
+    <!-- 成绩单 -->
+    <div id="stageResult" class="quiz-stage hidden result-stage">
+      <div class="result-card">
+        <h2>本季测验完成</h2>
+        <div class="result-score" id="resultScore"></div>
+        <div class="result-detail" id="resultDetail"></div>
+        <div class="result-actions">
+          <button class="btn btn-ghost" id="resultBackSeason">返回本季</button>
+          <button class="btn btn-primary" id="resultWrong">错题重练</button>
+          <button class="btn btn-ghost" id="resultRetry">再测一次</button>
+          <button class="btn btn-ghost" id="resultHome">回首页</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 闪卡速记 ============ -->
+  <section id="view-flashcard" class="view hidden">
+    <div id="flashSetup">
+      <div class="mix-setup-card">
+        <h2 class="mix-setup-title">🃏 闪卡速记</h2>
+        <p class="mix-setup-desc">
+          每张卡片<b>正面是星图</b>（先自己想名字与口诀），<b>点击卡片翻面</b>查看星座名、记忆口诀、最亮星与颜色。
+          可选择季节范围与是否随机，适合课前快速复习。
+        </p>
+        <div class="mix-block">
+          <div class="mix-block-title">选择范围（勾选模块）</div>
+          <div class="mix-checks" id="flashChecks"></div>
+        </div>
+        <div class="mix-block">
+          <label class="mix-opt">
+            <input type="checkbox" id="flashRandom">
+            <span>🔀 随机打乱顺序（默认按教学顺序）</span>
+          </label>
+          <label class="mix-opt">
+            <input type="checkbox" id="flashNoLines">
+            <span>📝 正面先隐藏连线（挑战：只看星点）</span>
+          </label>
+        </div>
+        <div class="mix-actions">
+          <button class="btn btn-primary" id="flashStartBtn" type="button">开始翻卡</button>
+        </div>
+        <p class="mix-warn hidden" id="flashWarn"></p>
+      </div>
+    </div>
+
+    <div id="flashPlay" class="hidden">
+      <div class="flash-topbar">
+        <span class="flash-count" id="flashCount"></span>
+        <button class="btn btn-toggle" id="flashFlipLinesBtn" type="button">显示/隐藏连线</button>
+        <button class="btn btn-quit" id="flashQuit" type="button">退出</button>
+      </div>
+      <div class="flash-card-outer">
+        <div class="flash-card" id="flashCard">
+          <!-- 正面：星图 -->
+          <div class="flash-face flash-front" id="flashFront">
+            <canvas id="flashChart"></canvas>
+            <p class="flash-hint">这是哪个星座？想一想它的口诀，再点击卡片翻面</p>
+          </div>
+          <!-- 背面：答案 -->
+          <div class="flash-face flash-back" id="flashBack">
+            <div class="flash-back-name" id="flashBackName"></div>
+            <div class="flash-back-mnemonic" id="flashBackMnemonic"></div>
+            <div class="flash-back-stars" id="flashBackStars"></div>
+            <p class="flash-hint">点击卡片返回正面</p>
+          </div>
+        </div>
+      </div>
+      <div class="flash-nav">
+        <button class="btn btn-ghost" id="flashPrevBtn" type="button">← 上一张</button>
+        <button class="btn btn-primary" id="flashFlipBtn" type="button">翻面</button>
+        <button class="btn btn-ghost" id="flashNextBtn" type="button">下一张 →</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 观星小课堂 ============ -->
+  <section id="view-basics" class="view hidden">
+    <div class="basics-head">
+      <h2>🎓 观星小课堂</h2>
+      <p class="muted">认星座之前，先搞懂这 6 个基础概念，后面学起来事半功倍。</p>
+    </div>
+    <div class="basics-grid" id="basicsGrid"></div>
+    <div class="center" style="margin-top:24px;">
+      <button class="btn btn-primary" id="basicsBackBtn" type="button">我懂了，去学星座 →</button>
+    </div>
+  </section>
+
+  <!-- ============ 混合随机抽查 ============ -->
+  <section id="view-mix" class="view hidden">
+
+    <!-- 配置面板 -->
+    <div id="mixSetup">
+      <div class="mix-setup-card">
+        <h2 class="mix-setup-title">🎲 混合随机抽查 · 10 题</h2>
+        <p class="mix-setup-desc">
+          从<b>春、夏、秋、冬与拱极</b>（共 53 个、不含南天星座）中随机派生出 <b>10 道题</b>，
+          混合“认星座”（看图选名）与“点亮亮星”（在图上点星）两种考查，各 5 题。作答前可先选择侧重。
+        </p>
+
+        <div class="mix-block">
+          <div class="mix-block-title">① 考查范围（勾选季节，默认全选）</div>
+          <div class="mix-checks" id="mixSeasonChecks"></div>
+        </div>
+
+        <div class="mix-block">
+          <div class="mix-block-title">② 侧重（可选）</div>
+          <label class="mix-opt">
+            <input type="checkbox" id="mixTopStar">
+            <span>⭐ 优先考查 <b>21 颗一等亮星</b>所在星座</span>
+          </label>
+          <p class="muted small mix-opt-note">
+            全天 21 颗一等亮星（视星等 ≤1.4）中，有 16 颗在四季 / 拱极可见，位于 15 个星座（猎户座含参宿七、
+            参宿四两颗）：天狼、大角、织女、五车二、参宿七、南河三、参宿四、水委一、河鼓二、毕宿五、角宿一、
+            心宿二、北河三、北落师门、天津四、轩辕十四。勾选后优先从这些星座出题；不足 10 题时用所选范围内的
+            其他星座补足。
+          </p>
+        </div>
+
+        <div class="mix-actions">
+          <button class="btn btn-primary" id="mixStartBtn" type="button">生成 10 题（按所选条件）</button>
+          <button class="btn btn-ghost" id="mixRandomBtn" type="button">纯随机 10 题（全部 53 个星座）</button>
+        </div>
+        <p class="mix-warn hidden" id="mixWarn"></p>
+      </div>
+    </div>
+
+    <!-- 答题面板 -->
+    <div id="mixQuiz" class="hidden">
+      <div class="quiz-topbar">
+        <div class="quiz-progress-wrap">
+          <div class="quiz-progress"><span id="mixProgressFill"></span></div>
+          <span class="quiz-progress-text" id="mixProgressText"></span>
+        </div>
+        <div class="quiz-score">得分：<b id="mixScore">0</b></div>
+        <button class="btn btn-toggle" id="mixLinesBtn" type="button">隐藏星座连线</button>
+        <button class="btn btn-quit" id="mixQuit" type="button">退出</button>
+      </div>
+
+      <div id="mixStageName" class="quiz-stage">
+        <h3 class="quiz-question">这是哪一个星座？（看星点与连线，选出它的名字）</h3>
+        <div class="quiz-chart-wrap"><canvas id="mixNameChart"></canvas></div>
+        <div class="options" id="mixNameOptions"></div>
+      </div>
+
+      <div id="mixStageStar" class="quiz-stage hidden">
+        <h3 class="quiz-question">在星图上点亮这颗亮星：<span class="target-star" id="mixTargetName"></span></h3>
+        <div class="quiz-chart-wrap clickable">
+          <canvas id="mixStarChart"></canvas>
+          <div class="crosshair" id="mixCrosshair"></div>
+        </div>
+        <p class="muted small center">请用鼠标（或手指）点击该亮星所在的星点</p>
+      </div>
+
+      <div id="mixFeedback" class="quiz-feedback hidden"></div>
+      <div class="quiz-next-wrap hidden" id="mixNextWrap">
+        <button class="btn btn-primary" id="mixNextBtn" type="button">继续 →</button>
+      </div>
+    </div>
+
+    <!-- 结果面板 -->
+    <div id="mixResult" class="hidden result-stage">
+      <div class="result-card">
+        <h2>随机抽查完成</h2>
+        <div class="result-score" id="mixResultScore"></div>
+        <div class="result-detail" id="mixResultDetail"></div>
+        <div class="result-actions">
+          <button class="btn btn-primary" id="mixRetryBtn" type="button">再来一组（同样侧重）</button>
+          <button class="btn btn-ghost" id="mixWrongBtn" type="button">错题重练</button>
+          <button class="btn btn-ghost" id="mixReconfigBtn" type="button">重新设置侧重</button>
+          <button class="btn btn-ghost" id="mixHomeBtn" type="button">回首页</button>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+</main>
+
+<script src="data/data.js"></script>
+<script src="data/teaching.js"></script>
+<script src="js/star-chart.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
